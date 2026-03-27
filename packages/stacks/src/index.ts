@@ -19,3 +19,4 @@ export * from './schemas/memo.schema';
 export * from './transactions/serialization';
 export * from './addresses';
 export * from './clarity';
+export * from './stackflow-transfer-summary';

@@ -49,6 +49,7 @@ export function StxSignStructuredMessageApprover({
     <BaseStxMessageApproverLayout
       accountId={accountId}
       accounts={accounts}
+      userAddress={signer.address}
       messageToSign={{ ...request.params, messageType: 'structured' }}
       onApprove={onApprove}
       onCloseApprover={closeApprover}

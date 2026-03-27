@@ -14,6 +14,7 @@ interface BaseStxMessageApproverLayoutProps {
   onCloseApprover(): void;
   accountId: string | null;
   accounts: Account[];
+  userAddress?: string;
   messageToSign:
     | {
         messageType: 'utf8';
@@ -32,6 +33,7 @@ export function BaseStxMessageApproverLayout({
   onCloseApprover,
   accountId,
   accounts,
+  userAddress,
   messageToSign,
 }: BaseStxMessageApproverLayoutProps) {
   return (
@@ -56,7 +58,7 @@ export function BaseStxMessageApproverLayout({
           </Approver.Section>
         )}
         {messageToSign.messageType === 'structured' && (
-          <StructuredMessageSection messageToSign={messageToSign} />
+          <StructuredMessageSection messageToSign={messageToSign} userAddress={userAddress} />
         )}
       </Approver.Container>
       <Approver.Footer>

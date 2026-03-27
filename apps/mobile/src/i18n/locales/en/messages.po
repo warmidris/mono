@@ -21,6 +21,11 @@ msgstr ""
 "\n"
 "The amount of bitcoin assigned to the inscription on-chain. A higher output value indicates a UTXO with more satoshis locked to that collectible."
 
+#: src/features/approver/stackflow-transfer-summary.section.tsx:38
+#: src/features/approver/stackflow-transfer-summary.section.tsx:45
+msgid " (you)"
+msgstr " (you)"
+
 #: src/features/approver/components/status-row/status-row-base.tsx:40
 msgid " on {date}"
 msgstr " on {date}"
@@ -143,6 +148,10 @@ msgstr "Account name cannot be empty"
 #: src/features/token/components/token-activity.tsx:40
 msgid "Activity"
 msgstr "Activity"
+
+#: src/features/approver/stackflow-transfer-summary.section.tsx:52
+msgid "Actor"
+msgstr "Actor"
 
 #: src/features/account/components/create-wallet-card.tsx:22
 #: src/features/account/sheets/add-account-sheet.tsx:26
@@ -397,7 +406,7 @@ msgstr "Back to review"
 msgid "Back up your Secret Key"
 msgstr "Back up your Secret Key"
 
-#: src/features/token/components/address-list.tsx:19
+#: src/features/approver/stackflow-transfer-summary.section.tsx:34
 msgid "Balances"
 msgstr "Balances"
 
@@ -706,6 +715,10 @@ msgstr "Depositing"
 msgid "Description"
 msgstr "Description"
 
+#: src/features/approver/stackflow-transfer-summary.section.tsx:50
+msgid "Details"
+msgstr "Details"
+
 #: src/app/settings/index.tsx:152
 msgid "Device ID"
 msgstr "Device ID"
@@ -996,6 +1009,10 @@ msgstr "Guides"
 msgid "Haptics"
 msgstr "Haptics"
 
+#: src/features/approver/stackflow-transfer-summary.section.tsx:55
+msgid "Hashed secret"
+msgstr "Hashed secret"
+
 #: src/app/settings/help/index.tsx:14
 #: src/app/settings/index.tsx:107
 msgid "Help"
@@ -1198,6 +1215,10 @@ msgstr "Locking"
 msgid "Magic Eden"
 msgstr "Magic Eden"
 
+#: src/features/approver/stackflow-transfer-summary.section.tsx:23
+msgid "Mainnet"
+msgstr "Mainnet"
+
 #: src/app/settings/index.tsx:85
 msgid "Mainnet, testnet or signet"
 msgstr "Mainnet, testnet or signet"
@@ -1253,9 +1274,8 @@ msgstr "Memo must be less than 34-bytes"
 msgid "Memo updated"
 msgstr "Memo updated"
 
-#: src/features/approver/layouts/base-stx-message-approver.layout.tsx:50
-#: src/features/approver/structured-message.section.tsx:48
-#: src/features/browser/approver-sheet/sign-message/sign-message.layout.tsx:50
+#: src/features/approver/layouts/base-stx-message-approver.layout.tsx:52
+#: src/features/approver/structured-message.section.tsx:56
 msgid "Message"
 msgstr "Message"
 
@@ -1342,7 +1362,7 @@ msgstr "No results found"
 msgid "No swaps available"
 msgstr "No swaps available"
 
-#: src/features/approver/components/nonce-card.tsx:19
+#: src/features/approver/stackflow-transfer-summary.section.tsx:51
 msgid "Nonce"
 msgstr "Nonce"
 
@@ -1729,8 +1749,7 @@ msgstr "Show advanced options"
 msgid "Show balances"
 msgstr "Show balances"
 
-#: src/features/approver/layouts/base-stx-message-approver.layout.tsx:40
-#: src/features/browser/approver-sheet/sign-message/sign-message.layout.tsx:29
+#: src/features/approver/layouts/base-stx-message-approver.layout.tsx:42
 msgid "Sign Message"
 msgstr "Sign Message"
 
@@ -1786,6 +1805,10 @@ msgstr "Something went wrong"
 #: src/shared/display-preference.ts:65
 msgid "SRC-20"
 msgstr "SRC-20"
+
+#: src/features/approver/stackflow-transfer-summary.section.tsx:27
+msgid "StackFlow channel update"
+msgstr "StackFlow channel update"
 
 #: src/utils/dapps.ts:60
 msgid "StackingDAO"
@@ -1873,6 +1896,10 @@ msgstr "Taproot"
 #: src/shared/display-preference.ts:30
 msgid "Taproot address"
 msgstr "Taproot address"
+
+#: src/features/approver/stackflow-transfer-summary.section.tsx:23
+msgid "Testnet"
+msgstr "Testnet"
 
 #: src/features/send/components/recipient/recipient-selector/recipient-selector-search-empty-state.tsx:12
 msgid "The address you entered isn’t valid. Verify and try again"
@@ -1986,6 +2013,10 @@ msgstr "To address"
 #: src/app/settings/display/index.tsx:117
 msgid "Toggle tactile feedback for interactions"
 msgstr "Toggle tactile feedback for interactions"
+
+#: src/features/approver/stackflow-transfer-summary.section.tsx:53
+msgid "Token"
+msgstr "Token"
 
 #: src/features/send/error-messages.ts:12
 msgid "Token can only have {decimals} decimals"
@@ -2109,6 +2140,10 @@ msgstr "Update the app to get access to the latest features."
 #: src/app/secure-your-wallet.tsx:27
 msgid "Use your device PIN, Face ID or other biometrics to secure your wallets"
 msgstr "Use your device PIN, Face ID or other biometrics to secure your wallets"
+
+#: src/features/approver/stackflow-transfer-summary.section.tsx:57
+msgid "Valid after"
+msgstr "Valid after"
 
 #: src/features/swap/components/fees-info-sheet.tsx:20
 #: src/utils/dapps.ts:70

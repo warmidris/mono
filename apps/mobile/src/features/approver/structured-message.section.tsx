@@ -1,18 +1,19 @@
 import { Divider } from '@/components/divider';
 import { ClarityValueListDisplayer } from '@/features/approver/clarity-value.section';
+import { StackflowTransferSummarySection } from '@/features/approver/stackflow-transfer-summary.section';
 import { t } from '@lingui/core/macro';
 import { ChainId } from '@stacks/network';
 import {
   ClarityType,
-  ClarityValue,
-  StringAsciiCV,
-  TupleCV,
-  UIntCV,
+  type ClarityValue,
+  type StringAsciiCV,
+  type TupleCV,
+  type UIntCV,
   cvToString,
   deserializeCV,
 } from '@stacks/transactions';
 
-import { stacksChainIdToCoreNetworkMode } from '@leather.io/stacks';
+import { parseStackflowTransferSummary, stacksChainIdToCoreNetworkMode } from '@leather.io/stacks';
 import { Approver, Box, Text } from '@leather.io/ui/native';
 import { capitalize } from '@leather.io/utils';
 
@@ -35,10 +36,17 @@ type StructuredMessageDataDomain = TupleCV<{
 
 interface StructuredMessageSectionProps {
   messageToSign: { messageType: 'structured'; message: string; domain: string };
+  userAddress?: string;
 }
 
-export function StructuredMessageSection({ messageToSign }: StructuredMessageSectionProps) {
+export function StructuredMessageSection({ messageToSign, userAddress }: StructuredMessageSectionProps) {
   const dom: StructuredMessageDataDomain = deserializeCV(messageToSign.domain);
+  const message = deserializeCV(messageToSign.message);
+
+  const stackflowSummary = parseStackflowTransferSummary({ message, domain: dom });
+  if (stackflowSummary) {
+    return <StackflowTransferSummarySection summary={stackflowSummary} userAddress={userAddress} />;
+  }
 
   const domainName = cvToDisplay(dom.value.name);
   const domainVersion = cvToDisplay(dom.value.version);
@@ -54,7 +62,7 @@ export function StructuredMessageSection({ messageToSign }: StructuredMessageSec
           </Text>
         </Box>
         <Divider />
-        <ClarityValueListDisplayer val={deserializeCV(messageToSign.message)} />
+        <ClarityValueListDisplayer val={message} />
       </Box>
     </Approver.Section>
   );
