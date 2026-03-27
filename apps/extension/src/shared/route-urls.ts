@@ -116,6 +116,7 @@ export enum RouteUrls {
   RpcStxTransferStx = '/stx-transfer-stx',
   RpcStxTransferSip9Nft = '/stx-transfer-sip9-nft',
   RpcStxTransferSip10Ft = '/stx-transfer-sip10-ft',
+  RpcStxMessageEncryption = '/stx-message-encryption',
 
   // New rpc routes for Approver UX
   FeeEditor = 'edit-fee',

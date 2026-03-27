@@ -14,6 +14,7 @@ import { RpcSignPsbtSummary } from '@app/pages/rpc-sign-psbt/rpc-sign-psbt-summa
 import { RpcStacksMessageSigning } from '@app/pages/rpc-sign-stacks-message/rpc-sign-stacks-message';
 import { rpcStxCallContractRoutes } from '@app/pages/rpc-stx-call-contract/rpc-stx-call-contract.routes';
 import { rpcStxDeployContractRoutes } from '@app/pages/rpc-stx-deploy-contract/rpc-stx-deploy-contract.routes';
+import { RpcStxMessageEncryption } from '@app/pages/rpc-stx-message-encryption/rpc-stx-message-encryption';
 import { RpcStxSignTransaction } from '@app/pages/rpc-stx-sign-transaction/rpc-stx-sign-transaction';
 import { rpcStxSignTransactionRoutes } from '@app/pages/rpc-stx-sign-transaction/rpc-stx-sign-transaction.routes';
 import { rpcStxTransferSip9NftRoutes } from '@app/pages/rpc-stx-transfer-sip9-nft/rpc-stx-transfer-sip9-nft.routes';
@@ -85,6 +86,15 @@ export const rpcRequestRoutes = (
     >
       {ledgerStacksMessageSigningRoutes}
     </Route>
+
+    <Route
+      path={RouteUrls.RpcStxMessageEncryption}
+      element={
+        <AccountGate>
+          <RpcStxMessageEncryption />
+        </AccountGate>
+      }
+    />
 
     <Route
       path={RouteUrls.RpcStxSignTransaction}

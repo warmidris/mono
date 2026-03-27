@@ -10,7 +10,9 @@ import { getInfo } from './methods/get-info';
 import { open } from './methods/open';
 import { openSwap } from './methods/open-swap';
 import { stxCallContract } from './methods/stacks/stx-call-contract';
+import { stxDecryptMessage } from './methods/stacks/stx-decrypt-message';
 import { stxDeployContract } from './methods/stacks/stx-deploy-contract';
+import { stxEncryptMessage } from './methods/stacks/stx-encrypt-message';
 import { stxGetAddresses } from './methods/stacks/stx-get-addresses';
 import { stxGetNetworks } from './methods/stacks/stx-get-networks';
 import { stxSignMessage } from './methods/stacks/stx-sign-message';
@@ -35,7 +37,10 @@ export * from './methods/stacks/_stacks-helpers';
 export * from './methods/stacks/stx-sign-message';
 export * from './methods/stacks/stx-sign-structured-message';
 export * from './methods/stacks/stx-sign-transaction';
+export * from './methods/stacks/_encrypted-message';
 export * from './methods/stacks/stx-call-contract';
+export * from './methods/stacks/stx-decrypt-message';
+export * from './methods/stacks/stx-encrypt-message';
 export * from './methods/stacks/stx-deploy-contract';
 export * from './methods/stacks/stx-get-addresses';
 export * from './methods/stacks/stx-transfer-sip9-nft';
@@ -55,7 +60,9 @@ export const endpoints = {
   signMessage,
   signPsbt,
   stxCallContract,
+  stxDecryptMessage,
   stxDeployContract,
+  stxEncryptMessage,
   stxGetAddresses,
   stxGetNetworks,
   stxSignMessage,

@@ -19,6 +19,10 @@ import {
 } from './rpc-methods/sign-stacks-message';
 import { stxCallContractHandler } from './rpc-methods/stx-call-contract';
 import { stxDeployContractHandler } from './rpc-methods/stx-deploy-contract';
+import {
+  stxDecryptMessageHandler,
+  stxEncryptMessageHandler,
+} from './rpc-methods/stx-message-encryption';
 import { stxSignTransactionHandler } from './rpc-methods/stx-sign-transaction';
 import { stxTransferSip9NftHandler } from './rpc-methods/stx-transfer-sip9-nft';
 import { stxTransferSip10FtHandler } from './rpc-methods/stx-transfer-sip10-ft';
@@ -79,6 +83,8 @@ registerRpcRequestHandler(...sendTransferHandler);
 registerRpcRequestHandler(...signMessageHandler);
 registerRpcRequestHandler(...signPsbtHandler);
 registerRpcRequestHandler(...stxCallContractHandler);
+registerRpcRequestHandler(...stxDecryptMessageHandler);
+registerRpcRequestHandler(...stxEncryptMessageHandler);
 registerRpcRequestHandler(...stxDeployContractHandler);
 registerRpcRequestHandler(...stxGetAddressesHandler);
 registerRpcRequestHandler(...stxSignMessageHandler);

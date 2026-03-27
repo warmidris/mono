@@ -44,6 +44,8 @@ export function addLeatherToProviders() {
       'stx_getAddresses',
       'stx_deployContract',
       'stx_callContract',
+      'stx_encryptMessage',
+      'stx_decryptMessage',
       'signPsbt',
       'signMessage',
       'sendTransfer',
