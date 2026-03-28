@@ -36,6 +36,7 @@ import { manageTokensSlice } from './manage-tokens/manage-tokens.slice';
 import { networksSlice } from './networks/networks.slice';
 import { settingsSlice } from './settings/settings.slice';
 import { keySlice } from './software-keys/software-key.slice';
+import { stackflowPipesSlice } from './stackflow/stackflow-pipes.slice';
 import { submittedTransactionsSlice } from './submitted-transactions/submitted-transactions.slice';
 import { uiSlice } from './ui/ui.slice';
 import { broadcastActionTypeToOtherFramesMiddleware } from './utils/broadcast-action-types';
@@ -51,6 +52,7 @@ export interface LocalRootState {
   inMemoryKeys: ReturnType<typeof inMemoryKeySlice.reducer>;
   softwareKeys: ReturnType<typeof keySlice.reducer>;
   networks: ReturnType<typeof networksSlice.reducer>;
+  stackflowPipes: ReturnType<typeof stackflowPipesSlice.reducer>;
   submittedTransactions: ReturnType<typeof submittedTransactionsSlice.reducer>;
   settings: ReturnType<typeof settingsSlice.reducer>;
   manageTokens: ReturnType<typeof manageTokensSlice.reducer>;
@@ -70,6 +72,7 @@ const appReducer = combineReducers({
   inMemoryKeys: inMemoryKeySlice.reducer,
   softwareKeys: keySlice.reducer,
   networks: networksSlice.reducer,
+  stackflowPipes: stackflowPipesSlice.reducer,
   submittedTransactions: submittedTransactionsSlice.reducer,
   settings: settingsSlice.reducer,
   manageTokens: manageTokensSlice.reducer,

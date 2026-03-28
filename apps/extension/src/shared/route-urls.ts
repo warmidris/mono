@@ -42,6 +42,12 @@ export enum RouteUrls {
   ViewSecretKey = '/view-secret-key',
   Settings = '/settings',
 
+  // StackFlow payment channel routes
+  StackflowPipes = '/stackflow',
+  StackflowPipeDetail = '/stackflow/pipe/:pipeKey',
+  StackflowPipeAction = '/stackflow/pipe/:pipeKey/:action',
+  StackflowImportPipe = '/stackflow/import',
+
   // nested routes must have relative paths
   Activity = '/activity',
   Collectibles = '/collectibles',

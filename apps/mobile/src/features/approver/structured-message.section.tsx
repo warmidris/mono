@@ -39,7 +39,10 @@ interface StructuredMessageSectionProps {
   userAddress?: string;
 }
 
-export function StructuredMessageSection({ messageToSign, userAddress }: StructuredMessageSectionProps) {
+export function StructuredMessageSection({
+  messageToSign,
+  userAddress,
+}: StructuredMessageSectionProps) {
   const dom: StructuredMessageDataDomain = deserializeCV(messageToSign.domain);
   const message = deserializeCV(messageToSign.message);
 

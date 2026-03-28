@@ -35,6 +35,7 @@ export enum StacksQueryPrefixes {
   GetAccountBalance = 'get-account-balance',
   GetStxAddressBalance = 'get-stx-address-balance',
   GetSip10AddressBalances = 'get-sip10-address-balances',
+  GetStackflowPipe = 'get-stackflow-pipe',
 }
 
 export enum BnsV2QueryPrefixes {

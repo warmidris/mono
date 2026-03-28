@@ -1278,8 +1278,7 @@ msgstr "Memo must be less than 34-bytes"
 msgid "Memo updated"
 msgstr "Memo updated"
 
-#: src/features/approver/layouts/base-stx-message-approver.layout.tsx:52
-#: src/features/approver/structured-message.section.tsx:56
+#: src/features/approver/structured-message.section.tsx:59
 msgid "Message"
 msgstr "Message"
 

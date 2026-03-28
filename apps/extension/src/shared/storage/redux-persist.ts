@@ -32,5 +32,6 @@ export const persistConfig: PersistConfig<LocalRootState> & HiddenUntypeDeserial
     'wallets',
     'keychains',
     'manageTokens',
+    'stackflowPipes',
   ],
 };

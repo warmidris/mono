@@ -42,6 +42,10 @@ import { BroadcastError } from '@app/pages/send/broadcast-error/broadcast-error'
 import { sendOrdinalRoutes } from '@app/pages/send/ordinal-inscription/ordinal-routes';
 import { sendCryptoAssetFormRoutes } from '@app/pages/send/send-crypto-asset-form/send-crypto-asset-form.routes';
 import { SettingsPage } from '@app/pages/settings/settings';
+import { StackflowImportPipe } from '@app/pages/stackflow/stackflow-import-pipe';
+import { StackflowPipeAction } from '@app/pages/stackflow/stackflow-pipe-action';
+import { StackflowPipeDetail } from '@app/pages/stackflow/stackflow-pipe-detail';
+import { StackflowPipesList } from '@app/pages/stackflow/stackflow-pipes-list';
 import {
   bitcoinSwapLegacyRoutes,
   stacksSwapLegacyRoutes,
@@ -278,6 +282,39 @@ function useAppRoutes() {
             element={
               <AccountGate>
                 <ManageTokensPage />
+              </AccountGate>
+            }
+          />
+
+          <Route
+            path={RouteUrls.StackflowPipes}
+            element={
+              <AccountGate>
+                <StackflowPipesList />
+              </AccountGate>
+            }
+          />
+          <Route
+            path={RouteUrls.StackflowPipeDetail}
+            element={
+              <AccountGate>
+                <StackflowPipeDetail />
+              </AccountGate>
+            }
+          />
+          <Route
+            path={RouteUrls.StackflowPipeAction}
+            element={
+              <AccountGate>
+                <StackflowPipeAction />
+              </AccountGate>
+            }
+          />
+          <Route
+            path={RouteUrls.StackflowImportPipe}
+            element={
+              <AccountGate>
+                <StackflowImportPipe />
               </AccountGate>
             }
           />

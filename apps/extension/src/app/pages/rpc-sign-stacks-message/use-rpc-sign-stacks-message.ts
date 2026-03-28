@@ -20,6 +20,7 @@ import {
   Utf8Payload,
 } from '@app/features/stacks-message-signer/stacks-message-signing';
 import { useSignStacksMessage } from '@app/features/stacks-message-signer/use-sign-stacks-message';
+import { useStackflowSigningInterceptor } from '@app/features/stacks-message-signer/use-stackflow-signing-interceptor';
 
 function getNetwork(networkName: string | null) {
   if (
@@ -90,8 +91,14 @@ export function useRpcSignStacksMessage() {
   const { tabId, requestId } = useRpcSignStacksMessageParams();
   if (!tabId) throw new Error('Requests can only be made with corresponding tab');
 
+  const payload = useRpcStacksMessagePayload();
+  const structuredPayload =
+    payload && payload.messageType === 'structured' ? (payload as StructuredPayload) : null;
+  const interceptStackflowSigning = useStackflowSigningInterceptor(structuredPayload);
+
   const { isLoading, signMessage } = useSignStacksMessage({
     onSignMessageCompleted(messageSignature) {
+      interceptStackflowSigning(messageSignature);
       void chrome.tabs.sendMessage(
         tabId,
         createRpcSuccessResponse('stx_signMessage', {

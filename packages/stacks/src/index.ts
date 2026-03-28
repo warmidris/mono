@@ -20,3 +20,7 @@ export * from './transactions/serialization';
 export * from './addresses';
 export * from './clarity';
 export * from './stackflow-transfer-summary';
+export * from './stackflow/stackflow.types';
+export * from './stackflow/stackflow-contracts';
+export * from './stackflow/stackflow-contract-calls';
+export * from './stackflow/stackflow-pipe-parser';
