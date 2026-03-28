@@ -30,7 +30,7 @@ export async function encryptStxMessage(
   message: string,
   recipientPublicKey: string
 ): Promise<EncryptedMessage> {
-  const recipientPub = stripHexPrefix(recipientPublicKey);
+  const recipientPub = hexToBytes(recipientPublicKey);
   const ephPriv = utils.randomPrivateKey();
   const epk = bytesToHex(getPublicKey(ephPriv, true));
 
@@ -56,8 +56,8 @@ export async function decryptStxMessage(
   encryptedMessage: EncryptedMessage,
   privateKey: string
 ): Promise<string> {
-  const privKey = stripHexPrefix(privateKey);
-  const epk = stripHexPrefix(encryptedMessage.epk);
+  const privKey = hexToBytes(privateKey);
+  const epk = hexToBytes(encryptedMessage.epk);
 
   const shared = getSharedSecret(privKey, epk);
   const sharedX = shared.subarray(1);
