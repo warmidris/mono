@@ -168,6 +168,10 @@ export function StackflowPipeDetail() {
               onClick={() => navigate(actionUrl('force-close'))}
               variant="destructive"
             />
+            <ActionButton
+              label="Cancel Force Close"
+              onClick={() => navigate(actionUrl('force-cancel'))}
+            />
             <ActionButton label="Finalize" onClick={() => navigate(actionUrl('finalize'))} />
             <ActionButton label="Dispute" onClick={() => navigate(actionUrl('dispute'))} />
           </Flex>

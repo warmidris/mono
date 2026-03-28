@@ -1,7 +1,8 @@
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 
 import { Flex, Stack, styled } from 'leather-styles/jsx';
 
+import { getFinalizeContractCallArgs, getForceCancelContractCallArgs } from '@leather.io/stacks';
 import { Caption } from '@leather.io/ui';
 
 import { Content } from '@app/components/layout';
@@ -9,46 +10,80 @@ import { Header } from '@app/components/layout/headers/header';
 import { HeaderBackButton } from '@app/components/layout/headers/header-back-button';
 import { HeaderGrid } from '@app/components/layout/headers/header-grid';
 import { HeaderNetwork } from '@app/components/layout/headers/header-network';
+import { useCurrentStacksAccountAddress } from '@app/store/accounts/blockchain/stacks/stacks-account.hooks';
 import { useStackflowPipeById } from '@app/store/stackflow/stackflow-pipes.selectors';
+
+import { useStackflowContractCall } from './use-stackflow-contract-call';
 
 const actionLabels: Record<string, string> = {
   close: 'Close Channel',
   'force-close': 'Force Close Channel',
+  'force-cancel': 'Cancel Force Close',
   finalize: 'Finalize Closure',
   dispute: 'Dispute Closure',
   deposit: 'Deposit',
   withdraw: 'Withdraw',
 };
 
+const simpleActions = new Set(['finalize', 'force-cancel']);
+
+function NotFoundView() {
+  return (
+    <Flex height="100vh" direction="column">
+      <Header px="space.04">
+        <HeaderGrid
+          leftCol={<HeaderBackButton />}
+          centerCol={
+            <styled.h1 textStyle="heading.05" textAlign="center">
+              Not found
+            </styled.h1>
+          }
+          rightCol={<HeaderNetwork />}
+        />
+      </Header>
+      <Content>
+        <Stack justify="center" align="center" py="space.06">
+          <Caption>Channel or action not found</Caption>
+        </Stack>
+      </Content>
+    </Flex>
+  );
+}
+
 export function StackflowPipeAction() {
   const { pipeKey, action } = useParams<{ pipeKey: string; action: string }>();
-  const navigate = useNavigate();
   const pipe = useStackflowPipeById(decodeURIComponent(pipeKey ?? ''));
+  const address = useCurrentStacksAccountAddress();
+  const { submitTransaction, isBroadcasting } = useStackflowContractCall();
 
-  if (!pipe || !action) {
-    return (
-      <Flex height="100vh" direction="column">
-        <Header px="space.04">
-          <HeaderGrid
-            leftCol={<HeaderBackButton />}
-            centerCol={
-              <styled.h1 textStyle="heading.05" textAlign="center">
-                Not found
-              </styled.h1>
-            }
-            rightCol={<HeaderNetwork />}
-          />
-        </Header>
-        <Content>
-          <Stack justify="center" align="center" py="space.06">
-            <Caption>Channel or action not found</Caption>
-          </Stack>
-        </Content>
-      </Flex>
-    );
-  }
+  if (!pipe || !action) return <NotFoundView />;
 
   const label = actionLabels[action] ?? action;
+  const { pipeId, latestSignature } = pipe;
+  const counterparty = pipeId.principal1 === address ? pipeId.principal2 : pipeId.principal1;
+  const isSimple = simpleActions.has(action);
+
+  function handleSubmit() {
+    if (action === 'finalize') {
+      const args = getFinalizeContractCallArgs({
+        contractId: pipeId.contractId,
+        token: pipeId.token,
+        counterparty,
+      });
+      void submitTransaction(args);
+      return;
+    }
+
+    if (action === 'force-cancel') {
+      const args = getForceCancelContractCallArgs({
+        contractId: pipeId.contractId,
+        token: pipeId.token,
+        counterparty,
+      });
+      void submitTransaction(args);
+      return;
+    }
+  }
 
   return (
     <Flex height="100vh" direction="column">
@@ -74,40 +109,42 @@ export function StackflowPipeAction() {
             borderColor="ink.border-default"
           >
             <Caption>
-              {label} for channel with{' '}
-              {pipe.pipeId.principal1 === pipe.pipeId.principal2
-                ? pipe.pipeId.principal2
-                : pipe.pipeId.principal2}
+              {label} for channel with {counterparty}
             </Caption>
-            {pipe.latestSignature && (
+            {latestSignature && (
               <>
                 <styled.span textStyle="caption.01" color="ink.text-subdued">
-                  Latest nonce: {pipe.latestSignature.nonce}
+                  Latest nonce: {latestSignature.nonce}
                 </styled.span>
                 <styled.span textStyle="caption.01" color="ink.text-subdued">
-                  Balances: {pipe.latestSignature.balance1} / {pipe.latestSignature.balance2}
+                  Balances: {latestSignature.balance1} / {latestSignature.balance2}
                 </styled.span>
               </>
             )}
           </Stack>
 
-          <Caption color="ink.text-subdued">
-            Transaction building and broadcasting will be connected here. This action will construct
-            the appropriate StackFlow contract call and submit it to the network.
-          </Caption>
-
-          <styled.button
-            px="space.04"
-            py="space.03"
-            bg="ink.action-primary-default"
-            borderRadius="sm"
-            cursor="pointer"
-            textStyle="label.02"
-            color="white"
-            onClick={() => navigate(-1)}
-          >
-            Back
-          </styled.button>
+          {isSimple ? (
+            <styled.button
+              px="space.04"
+              py="space.03"
+              bg="ink.action-primary-default"
+              borderRadius="sm"
+              cursor="pointer"
+              textStyle="label.02"
+              color="white"
+              disabled={isBroadcasting}
+              opacity={isBroadcasting ? 0.6 : 1}
+              onClick={handleSubmit}
+            >
+              {isBroadcasting ? 'Broadcasting...' : `Submit ${label}`}
+            </styled.button>
+          ) : (
+            <Caption color="ink.text-subdued">
+              This action requires both parties' signatures and should be initiated through the
+              channel coordinator application. The coordinator will request your wallet to sign the
+              contract call.
+            </Caption>
+          )}
         </Flex>
       </Content>
     </Flex>

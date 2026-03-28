@@ -5,6 +5,7 @@ import { Flex, styled } from 'leather-styles/jsx';
 
 import { LEATHER_GITBOOK_DEVS, LEATHER_GUIDES_URL } from '@leather.io/constants';
 import {
+  ArrowsRepeatLeftRightIcon,
   BellAlarmIcon,
   BellIcon,
   CodeIcon,
@@ -68,6 +69,13 @@ export function MenuButtons() {
           void navigate(RouteUrls.SelectNetwork);
         }}
         icon={<GlobeTiltedIcon />}
+      />
+
+      <SettingsButton
+        variant="chevron"
+        title="Payment Channels"
+        onClick={() => void navigate(RouteUrls.StackflowPipes)}
+        icon={<ArrowsRepeatLeftRightIcon />}
       />
 
       <SettingsButton
