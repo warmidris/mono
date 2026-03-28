@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router';
 
 import { Flex, Stack, styled } from 'leather-styles/jsx';
 
-import { getActionLabel } from '@leather.io/stacks';
+import { type StackflowOnChainPipeState, getActionLabel } from '@leather.io/stacks';
 import { Caption } from '@leather.io/ui';
 
 import { RouteUrls } from '@shared/route-urls';
@@ -12,6 +12,10 @@ import { Header } from '@app/components/layout/headers/header';
 import { HeaderBackButton } from '@app/components/layout/headers/header-back-button';
 import { HeaderGrid } from '@app/components/layout/headers/header-grid';
 import { HeaderNetwork } from '@app/components/layout/headers/header-network';
+import { useStackflowPipeOnChainState } from '@app/query/stacks/stackflow/stackflow-pipe.hooks';
+import { hiroFetchWrapper } from '@app/query/stacks/stacks-client';
+import { useCurrentStacksAccountAddress } from '@app/store/accounts/blockchain/stacks/stacks-account.hooks';
+import { useCurrentStacksNetworkState } from '@app/store/networks/networks.hooks';
 import { useStackflowPipeActions } from '@app/store/stackflow/stackflow-pipes.hooks';
 import { useStackflowPipeById } from '@app/store/stackflow/stackflow-pipes.selectors';
 
@@ -61,11 +65,61 @@ function DetailRow({ label, value }: { label: string; value: string }) {
   );
 }
 
+function OnChainStateSection({ state }: { state: StackflowOnChainPipeState }) {
+  return (
+    <Stack
+      gap="space.02"
+      p="space.04"
+      bg="ink.background-secondary"
+      borderRadius="sm"
+      border="1px solid"
+      borderColor="ink.border-default"
+    >
+      <styled.span textStyle="heading.05">On-Chain State</styled.span>
+      <DetailRow label="Balance 1" value={state.balance1} />
+      <DetailRow label="Balance 2" value={state.balance2} />
+      <DetailRow label="Nonce" value={state.nonce} />
+      <DetailRow label="Expires At" value={state.expiresAt} />
+      {state.closer && <DetailRow label="Closer" value={truncateAddress(state.closer)} />}
+      {state.pending1 && (
+        <DetailRow
+          label="Pending 1"
+          value={`${state.pending1.amount} (block ${state.pending1.burnHeight})`}
+        />
+      )}
+      {state.pending2 && (
+        <DetailRow
+          label="Pending 2"
+          value={`${state.pending2.amount} (block ${state.pending2.burnHeight})`}
+        />
+      )}
+    </Stack>
+  );
+}
+
 export function StackflowPipeDetail() {
   const { pipeKey } = useParams<{ pipeKey: string }>();
   const navigate = useNavigate();
-  const pipe = useStackflowPipeById(decodeURIComponent(pipeKey ?? ''));
+  const decodedKey = decodeURIComponent(pipeKey ?? '');
+  const pipe = useStackflowPipeById(decodedKey);
   const { removePipe } = useStackflowPipeActions();
+  const address = useCurrentStacksAccountAddress();
+  const network = useCurrentStacksNetworkState();
+
+  let counterparty = '';
+  if (pipe) {
+    counterparty =
+      pipe.pipeId.principal1 === address ? pipe.pipeId.principal2 : pipe.pipeId.principal1;
+  }
+
+  const { pipeState: onChainState } = useStackflowPipeOnChainState({
+    contractId: pipe?.pipeId.contractId ?? '',
+    token: pipe?.pipeId.token ?? null,
+    counterparty,
+    senderAddress: address,
+    network,
+    client: { fetch: hiroFetchWrapper },
+  });
 
   if (!pipe) {
     return (
@@ -129,6 +183,8 @@ export function StackflowPipeDetail() {
             <DetailRow label="Contract" value={truncateAddress(pipeId.contractId)} />
             <DetailRow label="Chain ID" value={chainId} />
           </Stack>
+
+          {onChainState && <OnChainStateSection state={onChainState} />}
 
           {latestSignature && (
             <Stack
