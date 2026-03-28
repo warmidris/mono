@@ -43,6 +43,8 @@ export const supportedMethodsHandler = defineRpcRequestHandler(
               name: 'openSwap',
               docsUrl: 'https://leather.gitbook.io/developers/bitcoin/swaps/open-swap',
             },
+            { name: 'stx_encryptMessage', docsUrl: '' },
+            { name: 'stx_decryptMessage', docsUrl: '' },
           ],
         },
       })
