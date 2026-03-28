@@ -21,8 +21,8 @@ msgstr ""
 "\n"
 "The amount of bitcoin assigned to the inscription on-chain. A higher output value indicates a UTXO with more satoshis locked to that collectible."
 
-#: src/features/approver/stackflow-transfer-summary.section.tsx:38
-#: src/features/approver/stackflow-transfer-summary.section.tsx:45
+#: src/features/approver/stackflow-transfer-summary.section.tsx:39
+#: src/features/approver/stackflow-transfer-summary.section.tsx:46
 msgid " (you)"
 msgstr " (you)"
 
@@ -149,7 +149,7 @@ msgstr "Account name cannot be empty"
 msgid "Activity"
 msgstr "Activity"
 
-#: src/features/approver/stackflow-transfer-summary.section.tsx:52
+#: src/features/approver/stackflow-transfer-summary.section.tsx:56
 msgid "Actor"
 msgstr "Actor"
 
@@ -502,6 +502,10 @@ msgstr "Change name"
 msgid "Changed network"
 msgstr "Changed network"
 
+#: src/features/approver/stackflow-transfer-summary.section.tsx:35
+msgid "Channel balances"
+msgstr "Channel balances"
+
 #: src/utils/dapps.ts:55
 msgid "Charisma"
 msgstr "Charisma"
@@ -715,7 +719,7 @@ msgstr "Depositing"
 msgid "Description"
 msgstr "Description"
 
-#: src/features/approver/stackflow-transfer-summary.section.tsx:50
+#: src/features/approver/stackflow-transfer-summary.section.tsx:51
 msgid "Details"
 msgstr "Details"
 
@@ -1009,7 +1013,7 @@ msgstr "Guides"
 msgid "Haptics"
 msgstr "Haptics"
 
-#: src/features/approver/stackflow-transfer-summary.section.tsx:55
+#: src/features/approver/stackflow-transfer-summary.section.tsx:65
 msgid "Hashed secret"
 msgstr "Hashed secret"
 
@@ -1362,7 +1366,7 @@ msgstr "No results found"
 msgid "No swaps available"
 msgstr "No swaps available"
 
-#: src/features/approver/stackflow-transfer-summary.section.tsx:51
+#: src/features/approver/stackflow-transfer-summary.section.tsx:53
 msgid "Nonce"
 msgstr "Nonce"
 
@@ -1806,6 +1810,10 @@ msgstr "Something went wrong"
 msgid "SRC-20"
 msgstr "SRC-20"
 
+#: src/features/approver/stackflow-transfer-summary.section.tsx:28
+msgid "StackFlow"
+msgstr "StackFlow"
+
 #: src/features/approver/stackflow-transfer-summary.section.tsx:27
 msgid "StackFlow channel update"
 msgstr "StackFlow channel update"
@@ -2014,7 +2022,7 @@ msgstr "To address"
 msgid "Toggle tactile feedback for interactions"
 msgstr "Toggle tactile feedback for interactions"
 
-#: src/features/approver/stackflow-transfer-summary.section.tsx:53
+#: src/features/approver/stackflow-transfer-summary.section.tsx:60
 msgid "Token"
 msgstr "Token"
 
@@ -2141,7 +2149,7 @@ msgstr "Update the app to get access to the latest features."
 msgid "Use your device PIN, Face ID or other biometrics to secure your wallets"
 msgstr "Use your device PIN, Face ID or other biometrics to secure your wallets"
 
-#: src/features/approver/stackflow-transfer-summary.section.tsx:57
+#: src/features/approver/stackflow-transfer-summary.section.tsx:70
 msgid "Valid after"
 msgstr "Valid after"
 

@@ -15,15 +15,21 @@ export interface StackflowTransferSummary {
   validAfter: string | null;
 }
 
-function isUint(value: ClarityValue): value is ClarityValue & { type: typeof ClarityType.UInt; value: bigint } {
+function isUint(
+  value: ClarityValue
+): value is ClarityValue & { type: typeof ClarityType.UInt; value: bigint } {
   return value.type === ClarityType.UInt;
 }
 
 function isPrincipal(value: ClarityValue): value is ClarityValue & { value: string } {
-  return value.type === ClarityType.PrincipalStandard || value.type === ClarityType.PrincipalContract;
+  return (
+    value.type === ClarityType.PrincipalStandard || value.type === ClarityType.PrincipalContract
+  );
 }
 
-function isOptionalSome(value: ClarityValue): value is ClarityValue & { type: typeof ClarityType.OptionalSome; value: ClarityValue } {
+function isOptionalSome(
+  value: ClarityValue
+): value is ClarityValue & { type: typeof ClarityType.OptionalSome; value: ClarityValue } {
   return value.type === ClarityType.OptionalSome;
 }
 
@@ -41,7 +47,7 @@ function getOptionalDisplay(value: ClarityValue | undefined): string | null {
   if (!value || typeof value !== 'object') return null;
   if (value.type === ClarityType.OptionalNone) return null;
   if (!isOptionalSome(value)) return null;
-  return cvToString(value.value, 'tryAscii');
+  return cvToString(value.value);
 }
 
 interface StructuredPayloadLike {
@@ -49,15 +55,21 @@ interface StructuredPayloadLike {
   domain: ClarityValue;
 }
 
-function isTuple(value: ClarityValue): value is ClarityValue & { type: typeof ClarityType.Tuple; value: Record<string, ClarityValue> } {
+function isTuple(
+  value: ClarityValue
+): value is ClarityValue & { type: typeof ClarityType.Tuple; value: Record<string, ClarityValue> } {
   return value.type === ClarityType.Tuple;
 }
 
-function isStringASCII(value: ClarityValue): value is ClarityValue & { type: typeof ClarityType.StringASCII; value: string } {
+function isStringASCII(
+  value: ClarityValue
+): value is ClarityValue & { type: typeof ClarityType.StringASCII; value: string } {
   return value.type === ClarityType.StringASCII;
 }
 
-export function parseStackflowTransferSummary(payload: StructuredPayloadLike): StackflowTransferSummary | null {
+export function parseStackflowTransferSummary(
+  payload: StructuredPayloadLike
+): StackflowTransferSummary | null {
   if (!isTuple(payload.message) || !isTuple(payload.domain)) return null;
   const domainName = payload.domain.value.name;
   const domainVersion = payload.domain.value.version;
@@ -108,8 +120,10 @@ export function parseStackflowTransferSummary(payload: StructuredPayloadLike): S
 }
 
 export function getActionLabel(summary: StackflowTransferSummary): string {
-  if (summary.action === '1' && summary.hashedSecret) return 'HTLC payment update';
-  if (summary.action === '1') return 'Transfer update';
-  if (summary.action === '2') return summary.actor === summary.contractId ? 'Reservoir liquidity update' : 'User liquidity update';
+  if (summary.action === '1' && summary.hashedSecret) return 'HTLC Payment';
+  if (summary.action === '1') return 'Transfer';
+  if (summary.action === '2') {
+    return summary.actor === summary.contractId ? 'Deposit' : 'Withdraw';
+  }
   return `Action ${summary.action}`;
 }

@@ -24,14 +24,15 @@ export function StackflowTransferSummarySection({
 
   return (
     <Approver.Section>
-      <Text variant="label01">{t`StackFlow channel update`}</Text>
+      <Text variant="label01">
+        {t`StackFlow`} — {getActionLabel(summary)}
+      </Text>
       <Box gap="2">
-        <Text variant="label02">{getActionLabel(summary)}</Text>
         <Text variant="caption01" color="ink.text-subdued">
           {truncateMiddle(summary.contractId)} · {networkLabel}
         </Text>
         <Divider />
-        <Text variant="label02" color="ink.text-subdued">{t`Balances`}</Text>
+        <Text variant="label02" color="ink.text-subdued">{t`Channel balances`}</Text>
         <Box flexDirection="row" justifyContent="space-between">
           <Text>
             {truncateMiddle(summary.principal1)}
@@ -48,13 +49,27 @@ export function StackflowTransferSummarySection({
         </Box>
         <Divider />
         <Text variant="label02" color="ink.text-subdued">{t`Details`}</Text>
-        <Text>{t`Nonce`}: {summary.nonce}</Text>
-        <Text>{t`Actor`}: {truncateMiddle(summary.actor)}</Text>
-        {summary.token && <Text>{t`Token`}: {truncateMiddle(summary.token, 18, 16)}</Text>}
-        {summary.hashedSecret && (
-          <Text>{t`Hashed secret`}: {truncateMiddle(summary.hashedSecret, 18, 14)}</Text>
+        <Text>
+          {t`Nonce`}: {summary.nonce}
+        </Text>
+        <Text>
+          {t`Actor`}: {truncateMiddle(summary.actor)}
+        </Text>
+        {summary.token && (
+          <Text>
+            {t`Token`}: {truncateMiddle(summary.token, 18, 16)}
+          </Text>
         )}
-        {summary.validAfter && <Text>{t`Valid after`}: {summary.validAfter}</Text>}
+        {summary.hashedSecret && (
+          <Text>
+            {t`Hashed secret`}: {summary.hashedSecret}
+          </Text>
+        )}
+        {summary.validAfter && (
+          <Text>
+            {t`Valid after`}: {summary.validAfter}
+          </Text>
+        )}
       </Box>
     </Approver.Section>
   );

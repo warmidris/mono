@@ -1,6 +1,7 @@
 import { ChainId } from '@stacks/network';
 import { Box, Stack, styled } from 'leather-styles/jsx';
 
+import { isFtAsset } from '@leather.io/query';
 import {
   type StackflowTransferSummary,
   getActionLabel,
@@ -11,6 +12,7 @@ import { UnsignedMessage } from '@shared/signature/signature-types';
 
 import { NoFeesWarningRow } from '@app/components/no-fees-warning-row';
 import { SignMessageActions } from '@app/features/message-signer/stacks-sign-message-action';
+import { useGetFungibleTokenMetadataQuery } from '@app/query/stacks/token-metadata/fungible-tokens/fungible-token-metadata.query';
 import { useCurrentStacksAccount } from '@app/store/accounts/blockchain/stacks/stacks-account.hooks';
 
 import { StructuredPayload } from '../stacks-message-signing';
@@ -24,6 +26,8 @@ interface SignatureRequestStructuredDataContentProps {
   payload: StructuredPayload;
 }
 
+const stxDecimals = 6;
+
 function truncateMiddle(value: string, prefix = 14, suffix = 12) {
   if (value.length <= prefix + suffix + 3) return value;
   return `${value.slice(0, prefix)}...${value.slice(-suffix)}`;
@@ -33,13 +37,21 @@ function getNetworkLabel(chainId: string): string {
   return chainId === String(ChainId.Mainnet) ? 'Mainnet' : 'Testnet';
 }
 
+function formatTokenAmount(rawAmount: string, decimals: number): string {
+  if (decimals === 0) return rawAmount;
+  const padded = rawAmount.padStart(decimals + 1, '0');
+  const intPart = padded.slice(0, -decimals);
+  const fracPart = padded.slice(-decimals).replace(/0+$/, '');
+  return fracPart ? `${intPart}.${fracPart}` : intPart;
+}
+
 interface BalanceRowProps {
   label: string;
-  balance: string;
+  amount: string;
   isUser: boolean;
 }
 
-function BalanceRow({ label, balance, isUser }: BalanceRowProps) {
+function BalanceRow({ label, amount, isUser }: BalanceRowProps) {
   return (
     <Box
       flexDirection="row"
@@ -55,10 +67,21 @@ function BalanceRow({ label, balance, isUser }: BalanceRowProps) {
         {isUser ? ' (you)' : ''}
       </styled.span>
       <styled.span textStyle="body.02" fontWeight={isUser ? 'medium' : 'regular'}>
-        {balance} raw units
+        {amount}
       </styled.span>
     </Box>
   );
+}
+
+function useTokenDisplay(token: string | null) {
+  const tokenQuery = useGetFungibleTokenMetadataQuery(token ?? '');
+  if (!token) return { symbol: 'STX', decimals: stxDecimals };
+  const metadata = tokenQuery.data;
+  if (!metadata || !isFtAsset(metadata)) return { symbol: undefined, decimals: undefined };
+  return {
+    symbol: metadata.symbol ?? undefined,
+    decimals: metadata.decimals ?? undefined,
+  };
 }
 
 function StackflowTransferSummaryBox({ summary }: { summary: StackflowTransferSummary }) {
@@ -66,6 +89,13 @@ function StackflowTransferSummaryBox({ summary }: { summary: StackflowTransferSu
   const userAddress = account?.address;
   const isUserPrincipal1 = userAddress === summary.principal1;
   const isUserPrincipal2 = userAddress === summary.principal2;
+  const { symbol, decimals } = useTokenDisplay(summary.token);
+
+  function formatBalance(raw: string): string {
+    if (decimals == null) return raw;
+    const formatted = formatTokenAmount(raw, decimals);
+    return symbol ? `${formatted} ${symbol}` : formatted;
+  }
 
   return (
     <Box
@@ -78,13 +108,7 @@ function StackflowTransferSummaryBox({ summary }: { summary: StackflowTransferSu
     >
       <Stack gap="space.04">
         <Stack gap="space.01">
-          <styled.h2 textStyle="label.01">StackFlow channel update</styled.h2>
-          <styled.div textStyle="body.02" color="ink.text-subdued">
-            {getActionLabel(summary)}
-          </styled.div>
-        </Stack>
-
-        <Stack gap="space.01">
+          <styled.h2 textStyle="label.01">StackFlow — {getActionLabel(summary)}</styled.h2>
           <styled.div textStyle="caption.01" color="ink.text-subdued">
             {truncateMiddle(summary.contractId)} · {getNetworkLabel(summary.chainId)}
           </styled.div>
@@ -92,16 +116,16 @@ function StackflowTransferSummaryBox({ summary }: { summary: StackflowTransferSu
 
         <Stack gap="space.02">
           <styled.div textStyle="label.02" color="ink.text-subdued">
-            Balances
+            Channel balances
           </styled.div>
           <BalanceRow
             label={truncateMiddle(summary.principal1)}
-            balance={summary.balance1}
+            amount={formatBalance(summary.balance1)}
             isUser={isUserPrincipal1}
           />
           <BalanceRow
             label={truncateMiddle(summary.principal2)}
-            balance={summary.balance2}
+            amount={formatBalance(summary.balance2)}
             isUser={isUserPrincipal2}
           />
         </Stack>
@@ -118,8 +142,8 @@ function StackflowTransferSummaryBox({ summary }: { summary: StackflowTransferSu
             </styled.div>
           )}
           {summary.hashedSecret && (
-            <styled.div textStyle="body.02">
-              Hashed secret: {truncateMiddle(summary.hashedSecret, 18, 14)}
+            <styled.div textStyle="body.02" wordBreak="break-all">
+              Hashed secret: {summary.hashedSecret}
             </styled.div>
           )}
           {summary.validAfter && (
