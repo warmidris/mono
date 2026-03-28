@@ -46,29 +46,26 @@ function formatTokenAmount(rawAmount: string, decimals: number): string {
 }
 
 interface BalanceRowProps {
-  label: string;
+  address: string;
   amount: string;
   isUser: boolean;
 }
 
-function BalanceRow({ label, amount, isUser }: BalanceRowProps) {
+function BalanceRow({ address, amount, isUser }: BalanceRowProps) {
   return (
     <Box
-      flexDirection="row"
-      justifyContent="space-between"
-      alignItems="center"
       px="space.03"
-      py="space.02"
+      py="space.03"
       borderRadius="xs"
       bg={isUser ? 'ink.background-secondary' : undefined}
     >
-      <styled.span textStyle="body.02" fontWeight={isUser ? 'medium' : 'regular'}>
-        {label}
+      <styled.div textStyle="caption.01" color="ink.text-subdued" mb="space.01">
+        {truncateMiddle(address)}
         {isUser ? ' (you)' : ''}
-      </styled.span>
-      <styled.span textStyle="body.02" fontWeight={isUser ? 'medium' : 'regular'}>
+      </styled.div>
+      <styled.div textStyle="body.01" fontWeight={isUser ? 'medium' : 'regular'}>
         {amount}
-      </styled.span>
+      </styled.div>
     </Box>
   );
 }
@@ -119,12 +116,12 @@ function StackflowTransferSummaryBox({ summary }: { summary: StackflowTransferSu
             Channel balances
           </styled.div>
           <BalanceRow
-            label={truncateMiddle(summary.principal1)}
+            address={summary.principal1}
             amount={formatBalance(summary.balance1)}
             isUser={isUserPrincipal1}
           />
           <BalanceRow
-            label={truncateMiddle(summary.principal2)}
+            address={summary.principal2}
             amount={formatBalance(summary.balance2)}
             isUser={isUserPrincipal2}
           />
