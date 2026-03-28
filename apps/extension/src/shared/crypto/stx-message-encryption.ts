@@ -22,7 +22,7 @@ function bytesToHex(bytes: Uint8Array): string {
 }
 
 function deriveKey(sharedX: Uint8Array): Uint8Array<ArrayBuffer> {
-  const derived = hkdf(sha256, sharedX, 'stackmail-v1', 'encrypt', 32);
+  const derived = hkdf(sha256, sharedX, 'stx-ecies-v1', 'encrypt', 32);
   return new Uint8Array(derived);
 }
 
