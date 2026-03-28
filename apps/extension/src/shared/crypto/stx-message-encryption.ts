@@ -4,16 +4,19 @@ import { getPublicKey, getSharedSecret, utils } from '@noble/secp256k1';
 
 import type { EncryptedMessage } from '@leather.io/rpc';
 
-function stripHexPrefix(value: string) {
-  return value.startsWith('0x') || value.startsWith('0X') ? value.slice(2) : value;
-}
-
 function hexToBytes(hex: string): Uint8Array {
-  const clean = stripHexPrefix(hex);
+  const clean = hex.startsWith('0x') || hex.startsWith('0X') ? hex.slice(2) : hex;
   const bytes = new Uint8Array(clean.length / 2);
   for (let i = 0; i < bytes.length; i++) {
     bytes[i] = parseInt(clean.slice(i * 2, i * 2 + 2), 16);
   }
+  return bytes;
+}
+
+function normalizePrivateKey(key: string): Uint8Array {
+  const bytes = hexToBytes(key);
+  // Stacks "compressed" private keys have a trailing 0x01 byte (33 bytes)
+  if (bytes.length === 33 && bytes[32] === 0x01) return bytes.subarray(0, 32);
   return bytes;
 }
 
@@ -56,7 +59,7 @@ export async function decryptStxMessage(
   encryptedMessage: EncryptedMessage,
   privateKey: string
 ): Promise<string> {
-  const privKey = hexToBytes(privateKey);
+  const privKey = normalizePrivateKey(privateKey);
   const epk = hexToBytes(encryptedMessage.epk);
 
   const shared = getSharedSecret(privKey, epk);
